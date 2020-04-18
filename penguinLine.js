@@ -12,23 +12,7 @@ var drawGraph = function(students)
 {
 	
 	
-//not sure about this part screen size and stuff?
-//got ride of the SVG and PATHvvvv
-	var screen = {width:500, height:400};
-	var margins = {top:15, bottom:40, left:70, right:40};
-	var graph = 
-		{
-			width: screen.width-margins.left-margins.right,
-			height: screen.height-margins.top-margins.bottom,
-		}
-	d3.select(student)
-		.attr("width", screen.width)
-		.attr("height", screen.height)
-	var g = d3.select(student)
-			.append("g")
-			.classed("graph", true)
-			.attr("transform", "translate("+margins.left+","+margins.top+")");
-	//DELETE THIS ^^^
+
 	
 	
 	
@@ -55,8 +39,7 @@ var svg = d3.select("body")
 svg.append("path")
 		.datum(students)
 		.attr("class","line")
-		.attr("student",line);
-	
+		.attr("student",line)
 }
 
 
