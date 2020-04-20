@@ -52,7 +52,26 @@ var drawLines = function(students,graph,xScale,yScale)
 		.append("g")
 		.classed("line", true)
 		.attr("fill","none")
-		.attr("stroke","blue");
+		.attr("stroke","blue")
+		.on("mouseover", function(student)
+		   {
+			if(! d3.select(this).classed("off"))
+				{
+				d3.selectAll(".line")
+					.classed("fade", true)
+				d3.select(this)
+					.classed("fade", false)
+					.raise();
+				}
+		})
+		.on("mouseout", function(student)
+		   {
+			if(! d3.select(this).classed("off"))
+				{
+					d3.select(".line")
+						.classed("fade", false);
+				}
+		})
 	lines.append("path")
 		.datum(quizes)
 		.attr("d",lineGenerator)}
@@ -104,3 +123,5 @@ var xScale = d3.scaleLinear()
 	drawLines(students,graph,xScale,yScale)
 	createAxes(screen,margins,graph,xScale,yScale)
 	}
+
+

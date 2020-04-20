@@ -12,3 +12,6 @@
 .tick {
 	fill: orange;
 }
+.fade {
+	opacity: .1;
+}
