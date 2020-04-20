@@ -6,51 +6,97 @@ function(students)
 	function(err)
 	{console.log("failed", err);}
 )
-
-//initiate graph
-var drawGraph = function(students)
+//labels
+var createLabels = function(screen,margins,graph,students)
+	{
+		var labels = d3.select("svg")
+			.append("g")
+			.classed("labels", true)
+			
+		labels.append("text")
+			.text("Student Quiz Scores")
+			.classed("title", true)
+			.attr("text-anchor", "middle")
+			.attr("x", margins.left+(graph.width/2))
+			.attr("y", margins.top)
+		labels.append("text")
+			.text("Day")
+			.classed("text-anchor","middle")
+			.attr("x", margins.left+(graph.width/2))
+			.attr("y", screen.height)
+		labels.append("g")
+			.attr("transform", "translate(20,"+(margins.top+(graph.height/2))+")")
+			.append("text")
+			.text("Quiz Score")
+			.classed("label", true)
+			.attr("text-anchor", "middle")
+			.attr("transform","rotate(90)")
+	}
+//lines
+var drawLines = function(students,graph,xScale,yScale)
 {
-	
-	
+	var lineGenerator = d3.line()
+	.x(function(student){return xScale(quizes.day);})
+	.y(function(student){return yScale(quizes.grade);})
 
-	
-	
-	
-	//Scales
-	var xScale = d3.scaleLinear()
-				.domain([0,40])
-				.range([0,250])
-	var yScale = d3.scaleLinear()
-				.domain([0,10])
-				.range([0,250])
-//Line generator	
-var line = d3.line()
-	.x(function(student){return xScale(student.quiz.day);})
-	.y(function(student){return yScale(student.quiz.grade);})
+	var lines = d3.select("svg")
+		.select(".graph")
+		.selectAll("g")
+		.data(students)
+		.enter()
+		.append("g")
+		.classed("line", true)
+		.attr("fill","none")
+		.attr("stroke","blue");
+	lines.append("path")
+		.datum(function(student)
+			  {return student.quizes})
+		.attr("d",lineGenerator)}
 
-
-//creating SVG element
-var svg = d3.select("body")
-		.append("svg")
-		.attr("width", 500)
-		.attr("height", 500);
-	
-//new path 
-svg.append("path")
-		.datum(students)
-		.attr("class","line")
-		.attr("student",line)
+//axis
+var createAxes = function(screen,margins,graph,xScale,yScale)
+{
+	var xAxis = d3.axisBottom(xScale)
+	var yAxis = d3.axisLeft(yScale)
+	var axes = d3.select("svg")
+				.append("g")
+		axes.append("g")
+			.attr("transform","translate("+margins.left+","+(margins.top+graph.height)+")")
+			.call(xAxis)
+		axes.append("g")
+			.attr("transform","translate("+margins.left+","+(margins.top)+")")
+			.call(yAxis)
 }
 
 
 
 
-//axis
-var xAxis = d3.axisBottom()
-	.scale(xScale);
+//drawgraph
+var drawGraph = function(students)
+{
+	var screen = {width:500, height:500};
+	var margins = {top: 20, bottom: 40, left: 70, right: 40};
+	var graph = {width: screen.width-margins.left-margins.right, height: screen.height-margins.top-margins.bottom};
 
-svg.append("g")
-	.call(xAxis)
-	.attr("class", "xaxis")
-	.attr("transform", "translate")
+	//creating svg
+var svg = d3.select("body")
+		.append("svg")
+		.attr("width", screen.width)
+		.attr("height", screen.height);
+var g = d3.select("svg")
+		.append("g")
+		.classed("graph", true)
+		.attr("transform", "translate("+margins.left+","+margins.top+")")
+
+//scales
+var xScale = d3.scaleLinear()
+				.domain([0,40])
+				.range([0, graph.width])
+	var yScale = d3.scaleLinear()
+				.domain([0,10])
+				.range([graph.height,0])
 	
+	createLabels(screen,margins,graph,students)
+	drawLines(students,graph,xScale,yScale)
+	createAxes(screen,margins,graph,xScale,yScale)
+	}
