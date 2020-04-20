@@ -7,8 +7,8 @@ function(students)
 	{console.log("failed", err);}
 )
 
-var quizes = function(students)
-	{return student.quiz}
+var quizes = function(student)
+	{return student.quizes}
 	
 //labels
 var createLabels = function(screen,margins,graph,students)
@@ -41,8 +41,8 @@ var createLabels = function(screen,margins,graph,students)
 var drawLines = function(students,graph,xScale,yScale)
 {
 	var lineGenerator = d3.line()
-	.x(function(student){return xScale(quizes.day);})
-	.y(function(student){return yScale(quizes.grade);})
+	.x(function(quiz){return xScale(quiz.day);})
+	.y(function(quiz){return yScale(quiz.grade);})
 
 	var lines = d3.select("svg")
 		.select(".graph")
@@ -54,9 +54,8 @@ var drawLines = function(students,graph,xScale,yScale)
 		.attr("fill","none")
 		.attr("stroke","blue");
 	lines.append("path")
-		.datum(function(student)
-			  {return student.quizes})
-		.attr("student",lineGenerator)}
+		.datum(quizes)
+		.attr("d",lineGenerator)}
 
 //axis
 var createAxes = function(screen,margins,graph,xScale,yScale)
