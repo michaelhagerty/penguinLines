@@ -6,6 +6,10 @@ function(students)
 	function(err)
 	{console.log("failed", err);}
 )
+
+var quizes = function(students)
+	{return student.quiz}
+	
 //labels
 var createLabels = function(screen,margins,graph,students)
 	{
@@ -21,7 +25,8 @@ var createLabels = function(screen,margins,graph,students)
 			.attr("y", margins.top)
 		labels.append("text")
 			.text("Day")
-			.classed("text-anchor","middle")
+			.classed("label", true)
+			.attr("text-anchor","middle")
 			.attr("x", margins.left+(graph.width/2))
 			.attr("y", screen.height)
 		labels.append("g")
@@ -51,7 +56,7 @@ var drawLines = function(students,graph,xScale,yScale)
 	lines.append("path")
 		.datum(function(student)
 			  {return student.quizes})
-		.attr("d",lineGenerator)}
+		.attr("student",lineGenerator)}
 
 //axis
 var createAxes = function(screen,margins,graph,xScale,yScale)

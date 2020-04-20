@@ -1,5 +1,14 @@
-.line {
-	fill: black;
-	stroke-width: 5px;
-	stroke: black;
+.label {
+	fill: rebeccapurple;
+	
+	
+}
+.title {
+	fill: mediumpurple;
+}
+.domain {
+	fill: orange;
+}
+.tick {
+	fill: orange;
 }
