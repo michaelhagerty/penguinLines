@@ -9,6 +9,29 @@ function(students)
 
 var quizes = function(student)
 	{return student.quizes}
+
+//tooltip
+
+var drawToolTip = function(student)
+{
+	d3.select("#tooltip div")
+		.remove();
+	var xPos = d3.event.pageX;
+	var yPos = d3.event.pageY;
+	
+	var imagetooltip = d3.select("#tooltip")
+		.classed("hidden",false)
+		.style("top",yPos+"px")
+		.style("left",xPos+"px")
+		.append("div")
+	imagetooltip.append("div")
+		.classed("tt-Title",true)
+		.text("Student Pic:");
+	imagetooltip.append('img')
+		.attr("id","photo")
+		.attr('src','imgs/'+student.picture);
+}
+
 	
 //labels
 var createLabels = function(screen,margins,graph,students)
@@ -61,8 +84,9 @@ var drawLines = function(students,graph,xScale,yScale)
 					.classed("fade", true)
 				d3.select(this)
 					.classed("fade", false)
-					.raise();
-				}
+					.raise()
+				drawToolTip(student)	;}
+				
 		})
 		.on("mouseout", function(student)
 		   {
@@ -71,7 +95,11 @@ var drawLines = function(students,graph,xScale,yScale)
 					d3.select(".line")
 						.classed("fade", false);
 				}
+			d3.select("tooltip")
+				.classed("hidden",true)
+			
 		})
+		
 	lines.append("path")
 		.datum(quizes)
 		.attr("d",lineGenerator)}
@@ -119,9 +147,11 @@ var xScale = d3.scaleLinear()
 				.domain([0,10])
 				.range([graph.height,0])
 	
+	
 	createLabels(screen,margins,graph,students)
 	drawLines(students,graph,xScale,yScale)
 	createAxes(screen,margins,graph,xScale,yScale)
-	}
+
+}
 
 
